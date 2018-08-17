@@ -1,0 +1,41 @@
+#!/bin/sh -e
+
+function new() {
+  if test -z "$1"; then
+    echo "Usage: new REPOPATH"
+    exit 1
+  fi
+
+  local repo_path="${GIT_ROOT:-git}/$1"
+
+  repo_path="${repo_path%.git}"
+  repo_path="${repo_path%/}"
+
+  if echo "$repo_path" | grep -q "\.git"; then
+    echo invalid name
+    exir 2
+  fi
+
+  repo_path="${repo_path}.git"
+
+  if test -e "$repo_path"; then
+    echo "This repository already exists"
+    exit 3
+  fi
+
+  mkdir "${repo_path}"
+  cd "${repo_path}"
+  git init --bare
+
+  repo_path="${repo_path%.git}"
+  cat <<END
+
+Repository $repo_path created.
+
+To push:
+
+git push git@HOST:$repo_path
+END
+}
+
+new "$@"

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+print_if_bare_repo='
+  d="${1#./}"
+  if "$(git --git-dir="$d" rev-parse --is-bare-repository)" = true
+  then
+    echo "${d%.git}"
+  fi
+'
+
+echo "AVAILABLE REPOSITORIES"
+echo
+find "${GIT_ROOT:-git}/" -type d -name "*.git" -exec sh -c "$print_if_bare_repo" -- \{} \; -prune 2>/dev/null
+echo

@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+cat <<END
+Run 'help' for help.
+
+AVAILABLE COMMANDS:
+
+END
+
+cd "$(dirname "$0")"
+
+for cmd in *
+do
+	[ -f "$cmd" ] && [ -x "$cmd" ] && echo "* $cmd"
+done
+
+echo
