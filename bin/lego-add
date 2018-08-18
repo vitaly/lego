@@ -34,6 +34,19 @@ END
   fi
 }
 
+check_env() {
+  if [ -e "$1/.env" ]; then
+    cat <<END
+You can edit configuration file at:
+
+    $1/.env
+----
+
+Or run 'lego config $2'
+END
+  fi
+}
+
 add() {
   if [[ $# > 0 ]]; then
     case "$1" in
@@ -42,13 +55,21 @@ add() {
 
     local legos="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../lib/lego; pwd)"
     if [ -d "$legos/$1" ]; then
+
       mkdir -p "legos/$1"
       local d="$(cd "legos/$1";pwd)"
+
       copy_files "$legos/$1" "$d"
+
       run_install "$d"
+
+      check_env "$d" "$1"
+
       lego-update
+
       echo
       echo done
+
       exit
     fi
 

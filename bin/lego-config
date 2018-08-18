@@ -1,0 +1,32 @@
+#!/bin/bash -eu
+
+help() {
+  cat << END
+Usage:
+    lego config LEGO
+END
+  exit
+}
+
+usage() {
+  help
+  exit 1
+}
+
+
+config() {
+
+  if [ ! -d "legos/$1" ]; then
+    echo "$1 not yet installed. Run 'lego-add $1' to install"
+    exit 1
+  fi
+
+  if [ ! -e "legos/$1/.env" ]; then
+    echo "$1 doesn't have config files to edit"
+    exit 2
+  fi
+
+  $EDITOR "legos/$1/.env"
+}
+
+config "$@"
