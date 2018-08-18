@@ -1,0 +1,5 @@
+#!/bin/bash -eu
+
+cat <<END
+Blah blah blah
+END

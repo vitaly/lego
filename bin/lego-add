@@ -1,0 +1,38 @@
+#!/bin/bash -eu
+
+export LEGO="$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
+
+help() {
+  cat << END
+Usage:
+    lego add IMAGE
+    lego build DIST
+    lego build DIST/IMAGE
+END
+  exit
+}
+
+build() {
+  local legos="$LEGO/legos"
+  if [[ $# > 0 ]]; then
+    case "$1" in
+      *help) help;;
+    esac
+
+    for d in "$1" "alpine/$1"; do
+      if [ -d "$legos/$d" ]; then
+        make -C "$legos/$d"
+        return
+      fi
+    done
+
+    echo "$1 not found"
+    exit 2
+
+  else
+    echo Build ALL
+    make -C "$legos"
+  fi
+}
+
+main "$@"

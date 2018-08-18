@@ -1,0 +1,21 @@
+#!/bin/bash -eu
+
+usage() {
+  lego-help
+  exit 1
+}
+
+main() {
+  if [ $# -eq 0  ]; then
+    usage
+  fi
+
+  if command -v "lego-$1" > /dev/null; then
+    exec "lego-$1"
+  else
+    echo "unknown command: $1"
+    usage
+  fi
+}
+
+main "$@"

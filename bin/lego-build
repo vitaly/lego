@@ -1,0 +1,38 @@
+#!/bin/bash -eu
+
+
+help() {
+  cat << END
+Usage:
+    lego build IMAGE
+    lego build DIST
+    lego build DIST/IMAGE
+END
+  exit
+}
+
+build() {
+  local build="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../build; pwd)"
+
+  if [[ $# > 0 ]]; then
+    case "$1" in
+      *help) help;;
+    esac
+
+    for d in "$1" "alpine/$1"; do
+      if [ -d "$build/$d" ]; then
+        make -C "$build/$d"
+        return
+      fi
+    done
+
+    echo "$1 not found"
+    exit 2
+
+  else
+    echo Build ALL
+    make -C "$build"
+  fi
+}
+
+build "$@"

@@ -1,0 +1,29 @@
+#!/bin/bash -eu
+
+export LEGO="$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
+
+help() {
+  echo Usage: lego init
+}
+
+usage() {
+  help
+  exit 1
+}
+
+init() {
+  if [ $# -gt 0 ]; then
+    case "$1" in
+      *help) help;;
+      *) usage;;
+    esac
+  fi
+
+  echo init
+  # TODO accept DIR
+
+  cp -fv "$LEGO/lib/templates/init/docker-compose.yml" .
+}
+
+
+init "$@"
