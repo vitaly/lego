@@ -1,6 +1,3 @@
-build/%:
-	${MAKE} -C $*/
-.PHONY: %/build
-
-build:  build/alpine
-.PHONY: build
+alpine:
+	${MAKE} -C $@
+.PHONY: alpine

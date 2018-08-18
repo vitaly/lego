@@ -1,7 +1,11 @@
 all: sshd gitd
 .PHONY: all
 
-sshd:
+base:
+	${MAKE} -C $@
+.PHONY: base
+
+sshd: base
 	${MAKE} -C $@
 .PHONY: sshd
 
