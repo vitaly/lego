@@ -1,0 +1,50 @@
+#!/bin/bash -eu
+
+export LEGO="$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
+
+help() {
+  echo Usage: lego update
+}
+
+usage() {
+  help
+  exit 1
+}
+
+update_compose() {
+  cat <<END > docker-compose.yml
+version: "3"
+
+END
+}
+
+update_env() {
+  rm -f .env
+  if [ -n "$(\ls -A legos/*/.env)" ]; then
+    cat legos/*/.env > .env
+  fi
+}
+
+update_services() {
+  if [ -z "$(\ls -A legos/*/service.yml)" ]; then
+    echo "No services found! use 'lego add'"
+    exit 2
+  fi
+
+  echo -e "services:\n"        >> docker-compose.yml
+  cat legos/*/service.yml >> docker-compose.yml
+}
+
+update() {
+  if [ $# -gt 0 ]; then
+    usage
+  fi
+
+  update_compose
+  update_services
+  update_env
+
+}
+
+
+update "$@"

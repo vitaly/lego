@@ -1,7 +1,6 @@
-export HUB_USER ?= ${USER}
 build:
-	docker build --rm --build-arg HUB_USER=${HUB_USER} --target gitd -t ${HUB_USER}/gitd-alpine .
-	docker build --rm --build-arg HUB_USER=${HUB_USER}               -t ${HUB_USER}/gitd-alpine-onbuild .
+	docker build --rm --target gitd -t gitd-alpine .
+	docker build --rm               -t gitd-alpine-onbuild .
 .PHONY: build
 
 push:

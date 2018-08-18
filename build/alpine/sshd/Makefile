@@ -1,7 +1,6 @@
-export HUB_USER ?= ${USER}
 build:
-	docker build --rm --target sshd -t ${HUB_USER}/sshd-alpine .
-	docker build --rm               -t ${HUB_USER}/sshd-alpine-onbuild .
+	docker build --rm --target sshd -t sshd-alpine .
+	docker build --rm               -t sshd-alpine-onbuild .
 .PHONY: build
 
 push:

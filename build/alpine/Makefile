@@ -1,6 +1,10 @@
-build/%:
-	${MAKE} -C $*/
-.PHONY: %/build
+all: sshd gitd
+.PHONY: all
 
-build:  build/sshd build/gitd
-.PHONY: build
+sshd:
+	${MAKE} -C $@
+.PHONY: sshd
+
+gitd: sshd
+	${MAKE} -C $@
+.PHONY: gitd

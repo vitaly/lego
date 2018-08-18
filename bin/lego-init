@@ -22,7 +22,8 @@ init() {
   echo init
   # TODO accept DIR
 
-  cp -fv "$LEGO/lib/templates/init/docker-compose.yml" .
+  mkdir legos
+  # cp -fv "$LEGO/lib/templates/init/docker-compose.yml" .
 }
 
 

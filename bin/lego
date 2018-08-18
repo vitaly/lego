@@ -10,8 +10,11 @@ main() {
     usage
   fi
 
-  if command -v "lego-$1" > /dev/null; then
-    exec "lego-$1"
+  cmd="lego-$1"
+
+  if command -v "$cmd" > /dev/null; then
+    shift
+    exec "$cmd" "$@"
   else
     echo "unknown command: $1"
     usage

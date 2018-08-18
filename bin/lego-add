@@ -1,38 +1,61 @@
 #!/bin/bash -eu
 
-export LEGO="$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
-
 help() {
   cat << END
 Usage:
-    lego add IMAGE
-    lego build DIST
-    lego build DIST/IMAGE
+    lego add LEGO
 END
   exit
 }
 
-build() {
-  local legos="$LEGO/legos"
+usage() {
+  help
+  exit 1
+}
+
+
+copy_files() {
+  tar -C "$1" -cvf - . | tar -C "$2" -xf -
+  (cd "$1"; find . -type f) | cut -d/ -f2- |\
+    while read f; do
+      local d=$(dirname "$f")
+      cp -f "$1/$f" "$2/$d/"
+    done
+}
+
+run_install() {
+  cat <<END
+
+  running gitd installation scripts...
+
+END
+  if [ -x "$1/install.sh" ]; then
+    "$1/install.sh"
+  fi
+}
+
+add() {
   if [[ $# > 0 ]]; then
     case "$1" in
       *help) help;;
     esac
 
-    for d in "$1" "alpine/$1"; do
-      if [ -d "$legos/$d" ]; then
-        make -C "$legos/$d"
-        return
-      fi
-    done
+    local legos="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../lib/lego; pwd)"
+    if [ -d "$legos/$1" ]; then
+      mkdir -p "legos/$1"
+      local d="$(cd "legos/$1";pwd)"
+      copy_files "$legos/$1" "$d"
+      run_install "$d"
+      lego-update
+      echo
+      echo done
+      exit
+    fi
 
     echo "$1 not found"
-    exit 2
-
-  else
-    echo Build ALL
-    make -C "$legos"
   fi
+
+  usage
 }
 
-main "$@"
+add "$@"

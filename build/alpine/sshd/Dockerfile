@@ -28,7 +28,7 @@ ONBUILD RUN echo GatewayPorts ${GATEWAY_PORTS} >> /etc/ssh/sshd_config
 ONBUILD ARG PERMIT_USER_ENVIRONMENT=yes
 ONBUILD RUN echo PermitUserEnvironment ${PERMIT_USER_ENVIRONMENT} >> /etc/ssh/sshd_config
 
-ONBUILD COPY ssh/ /etc/ssh/
+ONBUILD COPY fs/ /
 
 ONBUILD WORKDIR /root
 ONBUILD COPY authorized_keys/root .ssh/authorized_keys

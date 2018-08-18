@@ -1,6 +1,5 @@
 ####################################
-ARG HUB_USER
-FROM ${HUB_USER}/sshd-alpine AS gitd
+FROM sshd-alpine AS gitd
 
 # DISABLE LOGIN BANNERS
 RUN touch .hushlogin
@@ -25,7 +24,7 @@ ONBUILD RUN echo GatewayPorts ${GATEWAY_PORTS} >> /etc/ssh/sshd_config
 ONBUILD ARG PERMIT_USER_ENVIRONMENT=yes
 ONBUILD RUN echo PermitUserEnvironment ${PERMIT_USER_ENVIRONMENT} >> /etc/ssh/sshd_config
 
-ONBUILD COPY ssh/ /etc/ssh/
+ONBUILD COPY fs/ /
 
 # ROOT AUTH
 ONBUILD WORKDIR /root

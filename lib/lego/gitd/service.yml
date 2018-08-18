@@ -1,0 +1,11 @@
+  gitd:
+    container_name: gitd
+    build:
+      context: legos/gitd/build
+      args:
+        - "GIT_ROOT=${gitd_repositories_root}"
+    ports:
+      - "${gitd_port}:22"
+    volumes:
+      - "${gitd_volume_mount}:/git/${gitd_repositories_root}"
+

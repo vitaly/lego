@@ -1,0 +1,8 @@
+  postgres:
+    image: postgres
+    ports:
+      - "${postgres_port}:5432"
+    container_name: postgres
+    volumes:
+      - "${postgres_volume_mount}:/var/lib/postgresql/data"
+

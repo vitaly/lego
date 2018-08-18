@@ -8,31 +8,40 @@ Usage:
     lego build DIST
     lego build DIST/IMAGE
 END
-  exit
+}
+
+usage() {
+  help
+  exit 1
 }
 
 build() {
   local build="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../build; pwd)"
 
-  if [[ $# > 0 ]]; then
-    case "$1" in
-      *help) help;;
-    esac
+  cd "$build"
 
-    for d in "$1" "alpine/$1"; do
-      if [ -d "$build/$d" ]; then
-        make -C "$build/$d"
-        return
-      fi
-    done
-
-    echo "$1 not found"
-    exit 2
-
-  else
+  if [[ $# = 0 ]]; then
     echo Build ALL
-    make -C "$build"
+    make
+    exit
   fi
+
+  case "$1" in
+    *help) help; exit;;
+  esac
+
+  if [ -d "$1" ]; then
+    make -C "$1"
+    exit
+  fi
+
+  if [ -d "alpine/$1" ]; then
+    make -C alpine "$1"
+    exit
+  fi
+
+  echo "$1 not found"
+  usage
 }
 
 build "$@"
