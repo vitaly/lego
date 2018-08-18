@@ -1,0 +1,15 @@
+#!/bin/sh -eu
+
+pki="$(cd legos/taskd/build/fs/pki/; pwd)"
+
+source .env
+
+task config taskd.server -- $taskd_host_fqdm:$taskd_port
+
+task config taskd.credentials -- $(tail -1 user.config | tr -d "\r\n")
+
+task config taskd.certificate  -- $pki/client.cert.pem
+
+task config taskd.key          -- $pki/client.key.pem
+
+task config taskd.ca           -- $pki/ca.cert.pem

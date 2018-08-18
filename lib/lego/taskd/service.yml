@@ -1,0 +1,8 @@
+  taskd:
+    container_name: taskd
+    build:
+      context: legos/taskd/build
+    ports:
+      - "${taskd_port}:53589"
+    volumes:
+      - "${taskd_volume_mount}:/tasks"

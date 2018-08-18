@@ -1,0 +1,54 @@
+#!/bin/bash -eu
+
+help() {
+  cat << END
+Usage:
+    lego run LEGO COMMAND [ARGS]
+END
+  exit
+}
+
+usage() {
+  help
+  exit 1
+}
+
+
+run() {
+  if [ ! -d "legos/$1" ]; then
+    echo "$1 not yet installed. Run 'lego-add $1' to install"
+    exit 1
+  fi
+
+  local bin="legos/$1/bin"
+  if [ ! -d "$bin" ]; then
+    echo "$1 doesn't have amny commands"
+    exit 2
+  fi
+
+  case "$2" in
+    --list|-l)
+      echo
+      echo "Available $1 commands:"
+      echo
+      ls "$bin" | cat # ppipe to disable colors
+      exit
+      ;;
+  esac
+
+  local cmd="$bin/$2"
+  if [ ! -e "$cmd" ]; then
+    echo "$1 doesn't have command $2"
+    exit 2
+  fi
+
+  shift
+  shift
+  exec "$cmd" "$@"
+}
+
+if [ $# -lt 2 ]; then
+  usage
+fi
+
+run "$@"

@@ -1,5 +1,18 @@
 #!/bin/bash -eu
 
+RESET=$(   echo -e '\033[0m'  )
+
+BOLD=$(    echo -e '\033[1m'  )
+
+BLACK=$(   echo -e '\033[30m' )
+RED=$(     echo -e '\033[31m' )
+GREEN=$(   echo -e '\033[32m' )
+YELLOW=$(  echo -e '\033[33m' )
+BLUE=$(    echo -e '\033[34m' )
+MAGENTA=$( echo -e '\033[35m' )
+CYAN=$(    echo -e '\033[36m' )
+WHITE=$(   echo -e '\033[37m' )
+
 help() {
   cat << END
 Usage:
@@ -12,7 +25,6 @@ usage() {
   help
   exit 1
 }
-
 
 copy_files() {
   tar -C "$1" -cvf - --exclude .keep . | tar -C "$2" -xf -
@@ -30,14 +42,16 @@ END
 }
 
 check_env() {
+
   if [ -e "$1/.env" ]; then
     cat <<END
-You can edit configuration file at:
+###################################
+${BOLD}You can edit configuration file at:${RESET}
 
-    $1/.env
+    ${GREEN}$1/.env${RESET}
 ----
 
-Or run 'lego config $2'
+Or run '${GREEN}lego config $2${RESET}'
 END
   fi
 }
@@ -56,9 +70,9 @@ add() {
 
       copy_files "$legos/$1" "$d"
 
-      run_install "$d"
-
       check_env "$d" "$1"
+
+      run_install "$d"
 
       lego-update
 
