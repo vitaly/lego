@@ -1,4 +1,4 @@
-all: sshd gitd
+all: sshd gitd taskd
 .PHONY: all
 
 base:
@@ -12,3 +12,7 @@ sshd: base
 gitd: sshd
 	${MAKE} -C $@
 .PHONY: gitd
+
+taskd: base
+	${MAKE} -C $@
+.PHONY: taskd
