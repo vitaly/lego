@@ -35,6 +35,12 @@ update_services() {
   cat legos/*/service.yml >> docker-compose.yml
 }
 
+build() {
+  if [ -n "$(\ls -A legos/*/build)" ]; then
+    docker-compose build
+  fi
+}
+
 update() {
   if [ $# -gt 0 ]; then
     usage
@@ -43,7 +49,7 @@ update() {
   update_compose
   update_services
   update_env
-
+  build
 }
 
 
