@@ -44,6 +44,7 @@ run() {
 
   shift
   shift
+  echo exec "$cmd" "$@"
   exec "$cmd" "$@"
 }
 

@@ -2,6 +2,13 @@
 
 pki="$(cd legos/taskd/build/fs/pki/; pwd)"
 
+if [ -e ~/.task/pki ]; then
+  mv ~/.task/pki ~/.task/pki.$$.$(date +%Y%m%d-%H%M%S)
+fi
+
+cp -Rv $pki ~/.task/pki
+pki=~/.task/pki
+
 source .env
 
 task config taskd.server -- $taskd_host_fqdm:$taskd_port
