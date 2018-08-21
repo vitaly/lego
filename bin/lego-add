@@ -38,37 +38,12 @@ The original configuration is stored in
 
   - ${BLUE}${env}.orig${RESET}
 
-in case you want to compare.
-Running ${BOLD}lego config-diff ${name}${RESET} will run a diff of
-the current .env with the original.
+in case you want to compare running ${BOLD}lego config-diff ${name}${RESET}
+will run a diff of the current .env with the original.
 -----------------------------------------------------------------------------------
 
 
 END
-}
-
-# true if original env is different from current, e.g.
-# when current was edited, or new version of original was installed
-env_diff() {
-  local env="$1"
-  if ! diff -q "$env" "$env.orig"; then
-
-    cat <<END
-
-${YELLOW}Your configuration differs from the original:${RESET}
-
-${BLUE}======================
-
-END
-    diff -u "$env.orig" "$env" || true
-    cat <<END
-
-
-======================${RESET}
-
-END
-  fi
-
 }
 
 copy_env() {
@@ -90,8 +65,7 @@ copy_env() {
   # configuration
   [ -e "$env" ] || cp -vf "$template" "$env"
 
-  # tell user if env was changed
-  env_diff "$env"
+  lego-config-diff "$name"
 }
 
 run_install() {

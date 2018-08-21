@@ -1,0 +1,45 @@
+#!/bin/bash -eu
+
+source "$(dirname $0)/../lib/lego.sh"
+
+help() {
+ cat << END
+Usage:
+   lego config-diff LEGO
+END
+ exit
+}
+
+config_diff() {
+  handle_help "$@"
+  require_args lego-config-diff 1 "$@"
+
+  local name="$1"; shift
+  local dst="$(dst_lego $name)"
+
+  local env="$dst/.env"
+  local orig="$dst/.env.orig"
+
+  [ -r "$env" ] || die "$env not found"
+  [ -r "$orig" ] || die "$orig not found"
+
+  ! diff -q "$env" "$env.orig" || return 0
+
+  cat <<END
+
+${YELLOW}Your configuration differs from the original:${RESET}
+
+${BLUE}======================
+
+END
+    diff -u "$orig" "$env" || true
+    cat <<END
+
+
+======================${RESET}
+
+END
+
+}
+
+config_diff "$@"
