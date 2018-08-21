@@ -1,7 +1,5 @@
 #!/bin/bash -eu
 
-shopt -s nullglob
-
 source "$(dirname $0)/../lib/lego.sh"
 
 help() {
@@ -16,7 +14,7 @@ END
 }
 
 update_services() {
-  if [ -z legos/*/service.yml ]; then
+  if [ -z "$(compgen -G 'legos/*/service.yml')" ]; then
     echo "No services found! use 'lego add'"
     exit 2
   fi
@@ -27,13 +25,13 @@ update_services() {
 
 update_env() {
   rm -f .env
-  if [ -n legos/*/.env ]; then
+  if [ -n "$(compgen -G 'legos/*/.env')" ]; then
     cat legos/*/.env > .env
   fi
 }
 
 build() {
-  if [ -n legos/*/build ]; then
+  if [ -n "$(compgen -G 'legos/*/build')" ]; then
     # TODO: build only used legos
     docker-compose build
   fi
