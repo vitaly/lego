@@ -1,15 +1,20 @@
 #!/bin/sh -eu
 
+# PKI dir in the build directory
 pki="$(cd legos/taskd/build/fs/pki/; pwd)"
 
+# backup current local PKI dir
 if [ -e ~/.task/pki ]; then
   mv ~/.task/pki ~/.task/pki.$$.$(date +%Y%m%d-%H%M%S)
 fi
 
+# copy PKI from build
 cp -Rv $pki ~/.task/pki
 pki=~/.task/pki
 
 source .env
+
+# configure client
 
 task config taskd.server -- $taskd_host_fqdm:$taskd_port
 
