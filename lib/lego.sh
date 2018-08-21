@@ -1,9 +1,16 @@
 lego_root() {
-  "$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
+  echo "$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
 }
+
+source "$(lego_root)/lib/colors.sh"
 
 usage() {
   help
+  exit 1
+}
+
+die() {
+  echo "$@"
   exit 1
 }
 
@@ -16,9 +23,31 @@ handle_help() {
 }
 
 require_args() {
-  [ $# -gt 0 ] || usage
+  local name="$1"; shift
+  local n="$1"; shift
+
+  [ $# -lt $n ] || return 0
+
+  echo "$name: required arguments: $n"
+  usage
 }
 
 initialized() {
   test -d legos
+}
+
+check_initialized() {
+  initialized || die "run 'lego init' first"
+}
+
+src_lego() {
+  local src="$(lego_root)/lib/lego/$1"
+  [ -d "$src" ] || die "$src/ not found"
+  echo "$src"
+}
+
+dst_lego() {
+  [ 1 = $# ] || die "dst_lego requires one argument"
+  check_initialized
+  echo "$(pwd)/legos/$1"
 }

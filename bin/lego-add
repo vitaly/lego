@@ -1,17 +1,9 @@
 #!/bin/bash -eu
 
-RESET=$(   echo -e '\033[0m'  )
+source "$(dirname $0)/../lib/lego.sh"
 
-BOLD=$(    echo -e '\033[1m'  )
-
-BLACK=$(   echo -e '\033[30m' )
-RED=$(     echo -e '\033[31m' )
-GREEN=$(   echo -e '\033[32m' )
-YELLOW=$(  echo -e '\033[33m' )
-BLUE=$(    echo -e '\033[34m' )
-MAGENTA=$( echo -e '\033[35m' )
-CYAN=$(    echo -e '\033[36m' )
-WHITE=$(   echo -e '\033[37m' )
+# TODO:
+# - manifest of installed files for proper cleanup
 
 help() {
   cat << END
@@ -21,71 +13,110 @@ END
   exit
 }
 
-usage() {
-  help
-  exit 1
+copy_files() {
+  local src="$1"
+  local dst="$2"
+
+  mkdir -p "$dst"
+  tar -C "$src" -cvf - --exclude .keep . | tar -C "$dst" -xf -
 }
 
-copy_files() {
-  tar -C "$1" -cvf - --exclude .keep . | tar -C "$2" -xf -
+env_help() {
+  local name="$1"
+  local env="$2"
+
+  cat <<END
+
+-----------------------------------------------------------------------------------
+${BOLD}${name}${RESET} includes a configuration file at
+
+  - ${GREEN}${env}${RESET}
+
+You can edit it directly, or run '${GREEN}lego config ${name}${RESET}'.
+
+The original configuration is stored in
+
+  - ${BLUE}${env}.orig${RESET}
+
+in case you want to compare.
+Running ${BOLD}lego config-diff ${name}${RESET} will run a diff of
+the current .env with the original.
+-----------------------------------------------------------------------------------
+
+
+END
+}
+
+# true if original env is different from current, e.g.
+# when current was edited, or new version of original was installed
+env_diff() {
+  local env="$1"
+  if ! diff -q "$env" "$env.orig"; then
+
+    cat <<END
+
+${YELLOW}Your configuration differs from the original:${RESET}
+
+${BLUE}======================
+
+END
+    diff -u "$env.orig" "$env" || true
+    cat <<END
+
+
+======================${RESET}
+
+END
+  fi
+
+}
+
+copy_env() {
+  local name="$1"
+  local dst="$2"
+
+  local template="$dst/templates/.env"
+  [ -r "$template" ] || return 0
+
+  local env="$dst/.env"
+
+  # lego has .env. tell user avout it
+  env_help "$name" "$env"
+
+  # always copy .orig
+  cp -f "$template" "$env.orig"
+
+  # only copy .env if it doesn't aleady exist. do not overwrite potential local
+  # configuration
+  [ -e "$env" ] || cp -vf "$template" "$env"
+
+  # tell user if env was changed
+  env_diff "$env"
 }
 
 run_install() {
-  cat <<END
+  local dst="$1"
 
-  running gitd installation scripts...
+  [ -x "$dst/install.sh" ] || return 0
 
-END
-  if [ -x "$1/install.sh" ]; then
-    "$1/install.sh"
-  fi
-}
-
-check_env() {
-
-  if [ -e "$1/.env" ]; then
-    cat <<END
-###################################
-${BOLD}You can edit configuration file at:${RESET}
-
-    ${GREEN}$1/.env${RESET}
-----
-
-Or run '${GREEN}lego config $2${RESET}'
-END
-  fi
+  "$dst/install.sh"
 }
 
 add() {
-  if [[ $# > 0 ]]; then
-    case "$1" in
-      *help) help;;
-    esac
+  handle_help "$@"
+  require_args lego-add 1 "$@"
 
-    local legos="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../lib/lego; pwd)"
-    if [ -d "$legos/$1" ]; then
+  local name="$1"
+  local src="$(src_lego $name)"
+  local dst="$(dst_lego $name)"
 
-      mkdir -p "legos/$1"
-      local d="$(cd "legos/$1";pwd)"
+  copy_files "$src" "$dst"
 
-      copy_files "$legos/$1" "$d"
+  copy_env "$name" "$dst"
 
-      check_env "$d" "$1"
+  run_install "$dst"
 
-      run_install "$d"
-
-      lego-update
-
-      echo
-      echo done
-
-      exit
-    fi
-
-    echo "$1 not found"
-  fi
-
-  usage
+  lego-update
 }
 
 add "$@"
