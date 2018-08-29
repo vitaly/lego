@@ -11,25 +11,15 @@ Usage:
 END
 }
 
-usage() {
-  help
-  exit 1
-}
-
 build() {
-  local build="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../build; pwd)"
+  handle_help "$@"
 
-  cd "$build"
+  cd "$(lego_root)/build"
 
   if [[ $# = 0 ]]; then
     echo Build ALL
-    make
-    exit
+    exec make
   fi
-
-  case "$1" in
-    *help) help; exit;;
-  esac
 
   if [ -d "$1" ]; then
     make -C "$1"

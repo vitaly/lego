@@ -1,4 +1,4 @@
-all: sshd gitd taskd
+all: sshd gitd taskd gemstash
 .PHONY: all
 
 base:
@@ -16,3 +16,7 @@ gitd: sshd
 taskd: base
 	${MAKE} -C $@
 .PHONY: taskd
+
+gemstash: base
+	${MAKE} -C $@
+.PHONY: gemstash

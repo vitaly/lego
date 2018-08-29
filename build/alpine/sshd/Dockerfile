@@ -1,7 +1,6 @@
 ########################
 FROM base-alpine AS sshd
 
-RUN apk --no-cache upgrade
 RUN apk --no-cache add openssh
 
 # SSHD CONFIG
