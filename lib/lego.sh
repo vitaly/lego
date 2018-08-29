@@ -2,6 +2,17 @@ lego_root() {
   echo "$(cd "$(dirname "${BASH_SOURCE[0]}")"/..; pwd)"
 }
 
+cmd_path() {
+  echo "$(lego_root)/lib/bin/$1"
+}
+
+lego_cmd() {
+  local cmd="$1"; shift
+
+  "$(cmd_path "$cmd")" "$@"
+}
+
+
 source "$(lego_root)/lib/colors.sh"
 
 usage() {

@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-source "$(dirname $0)/../lib/lego.sh"
+source "$(dirname $0)/../lego.sh"
 
 # TODO:
 # - manifest of installed files for proper cleanup
@@ -65,7 +65,7 @@ copy_env() {
   # configuration
   [ -e "$env" ] || cp -vf "$template" "$env"
 
-  lego-config-diff "$name"
+  lego_cmd config-diff "$name"
 }
 
 run_install() {
@@ -78,7 +78,7 @@ run_install() {
 
 add() {
   handle_help "$@"
-  require_args lego-add 1 "$@"
+  require_args add 1 "$@"
 
   local name="$1"
   local src="$(src_lego $name)"
@@ -90,7 +90,7 @@ add() {
 
   run_install "$dst"
 
-  lego-update
+  lego_cmd update
 }
 
 add "$@"

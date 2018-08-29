@@ -1,20 +1,21 @@
 #!/bin/bash -eu
 
-usage() {
-  lego-help
-  exit 1
+source "$(dirname $0)/../lib/lego.sh"
+
+help() {
+  cat << END
+Usage:
+    lego ...
+END
+  exit
 }
 
 main() {
-  if [ $# -eq 0  ]; then
-    usage
-  fi
+  handle_help "$@"
+  require_args lego 1 "$@"
 
-  cmd="lego-$1"
-
-  if command -v "$cmd" > /dev/null; then
-    shift
-    exec "$cmd" "$@"
+  if [ -x "$(cmd_path "$1")" ]; then
+    lego_cmd "$@"
   else
     echo "unknown command: $1"
     usage

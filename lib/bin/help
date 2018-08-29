@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+source "$(dirname $0)/../lego.sh"
+
 cat <<END
 Blah blah blah
 END
