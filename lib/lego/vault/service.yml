@@ -1,0 +1,8 @@
+  vault:
+    image: vault
+    ports:
+      - "${vault_port}:8200"
+    container_name: vault
+    # volumes:
+      # - "${postgres_volume_mount}:/var/lib/postgresql/data"
+
