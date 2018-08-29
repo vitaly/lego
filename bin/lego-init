@@ -9,7 +9,7 @@ help() {
 init() {
   handle_help "$@"
 
-  mkdir -p legos
+  touch .legos
 }
 
 init "$@"

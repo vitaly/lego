@@ -1,7 +1,7 @@
 #!/bin/sh -eu
 
 # PKI dir in the build directory
-pki="$(cd legos/taskd/build/fs/pki/; pwd)"
+pki="$(cd taskd/build/fs/pki/; pwd)"
 
 # backup current local PKI dir
 if [ -e ~/.task/pki ]; then

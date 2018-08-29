@@ -16,17 +16,17 @@ usage() {
 
 config() {
 
-  if [ ! -d "legos/$1" ]; then
+  if [ ! -d "$1" ]; then
     echo "$1 not yet installed. Run 'lego-add $1' to install"
     exit 1
   fi
 
-  if [ ! -e "legos/$1/.env" ]; then
+  if [ ! -e "$1/.env" ]; then
     echo "$1 doesn't have config files to edit"
     exit 2
   fi
 
-  $EDITOR "legos/$1/.env"
+  $EDITOR "$1/.env"
 }
 
 config "$@"

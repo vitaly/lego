@@ -1,7 +1,7 @@
   taskd:
     container_name: taskd
     build:
-      context: legos/taskd/build
+      context: taskd/build
     ports:
       - "${taskd_port}:53589"
     volumes:

@@ -14,24 +14,24 @@ END
 }
 
 update_services() {
-  if [ -z "$(compgen -G 'legos/*/service.yml')" ]; then
+  if [ -z "$(compgen -G '*/service.yml')" ]; then
     echo "No services found! use 'lego add'"
     exit 2
   fi
 
   echo -e "services:\n"        >> docker-compose.yml
-  cat legos/*/service.yml >> docker-compose.yml
+  cat */service.yml >> docker-compose.yml
 }
 
 update_env() {
   rm -f .env
-  if [ -n "$(compgen -G 'legos/*/.env')" ]; then
-    cat legos/*/.env > .env
+  if [ -n "$(compgen -G '*/.env')" ]; then
+    cat */.env > .env
   fi
 }
 
 build() {
-  if [ -n "$(compgen -G 'legos/*/build')" ]; then
+  if [ -n "$(compgen -G '*/build')" ]; then
     # TODO: build only used legos
     docker-compose build
   fi

@@ -33,7 +33,7 @@ require_args() {
 }
 
 initialized() {
-  test -d legos
+  test -r .legos
 }
 
 check_initialized() {
@@ -49,5 +49,5 @@ src_lego() {
 dst_lego() {
   [ 1 = $# ] || die "dst_lego requires one argument"
   check_initialized
-  echo "$(pwd)/legos/$1"
+  echo "$(pwd)/$1"
 }

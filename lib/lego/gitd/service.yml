@@ -1,7 +1,7 @@
   gitd:
     container_name: gitd
     build:
-      context: legos/gitd/build
+      context: gitd/build
       args:
         - "GIT_ROOT=${gitd_repositories_root}"
     ports:

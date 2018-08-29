@@ -15,12 +15,12 @@ usage() {
 
 
 run() {
-  if [ ! -d "legos/$1" ]; then
+  if [ ! -d "$1" ]; then
     echo "$1 not yet installed. Run 'lego-add $1' to install"
     exit 1
   fi
 
-  local bin="legos/$1/bin"
+  local bin="$1/bin"
   if [ ! -d "$bin" ]; then
     echo "$1 doesn't have amny commands"
     exit 2
