@@ -1,8 +1,8 @@
-  taskd:
-    container_name: taskd
+  %NAME%:
+    container_name: %NAME
     build:
-      context: taskd/build
+      context: %NAME%/build
     ports:
-      - "${taskd_port}:53589"
+      - "${%NAME%_port}:53589"
     volumes:
-      - "${taskd_volume_mount}:/tasks"
+      - "${%NAME%_volume_mount}:/tasks"

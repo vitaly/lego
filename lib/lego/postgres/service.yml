@@ -1,8 +1,8 @@
-  postgres:
+  %NAME%:
     image: postgres
     ports:
-      - "${postgres_port}:5432"
-    container_name: postgres
+      - "${%NAME%_port}:5432"
+    container_name: %NAME%
     volumes:
-      - "${postgres_volume_mount}:/var/lib/postgresql/data"
+      - "${%NAME%_volume_mount}:/var/lib/postgresql/data"
 

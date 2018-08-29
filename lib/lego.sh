@@ -51,14 +51,13 @@ check_initialized() {
   initialized || die "run 'lego init' first"
 }
 
-src_lego() {
+src_path() {
   local src="$(lego_root)/lib/lego/$1"
   [ -d "$src" ] || die "$src/ not found"
   echo "$src"
 }
 
-dst_lego() {
-  [ 1 = $# ] || die "dst_lego requires one argument"
+dst_path() {
   check_initialized
   echo "$(pwd)/$1"
 }

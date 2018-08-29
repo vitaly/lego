@@ -13,12 +13,32 @@ END
   exit
 }
 
+copy_file() {
+  local name="$1"
+  local src="${2#./}"
+  local path="${3#./}"
+  local dst="$4"
+
+  echo name=$name src=$src path=$path dst=$dst
+
+  local dir="$dst/$(dirname "$path")"
+  echo dir=$dir
+  set -x
+  mkdir -p "$dir"
+  cp -fv "$src/$path" "$dst/$path"
+  sed -i "" "s/%NAME%/$name/g" "$dst/$path"
+}
+
 copy_files() {
-  local src="$1"
-  local dst="$2"
+  local name="$1"
+  local src="$2"
+  local dst="$3"
 
   mkdir -p "$dst"
-  tar -C "$src" -cvf - --exclude .keep . | tar -C "$dst" -xf -
+  # tar -C "$src" -cvf - --exclude .keep . | tar -C "$dst" -xf -
+  for file in $( cd "$src"; find . -type f ); do
+    copy_file "$name" "$src" "$file" "$dst"
+  done
 }
 
 env_help() {
@@ -80,13 +100,30 @@ add() {
   handle_help "$@"
   require_args add 1 "$@"
 
-  local name="$1"
-  local src="$(src_lego $name)"
-  local dst="$(dst_lego $name)"
+  local lego="$1"
 
-  copy_files "$src" "$dst"
+  if [ $# -gt 1 ]; then
+    # user passed custom lego name
+    local name="$2"
+  else
+    # standard name
+    local name="$lego"
+  fi
 
-  copy_env "$name" "$dst"
+
+  local src="$(src_path $lego)"
+  local dst="$(dst_path $name)"
+
+  if [ ! -d "$src" ]; then
+    echo "ERROR: $lego not found"
+    exit 1
+  fi
+
+  copy_files "$name" "$src" "$dst"
+
+  copy_env "$lego" "$dst"
+
+  echo "$lego" > "$dst/.lego"
 
   run_install "$dst"
 

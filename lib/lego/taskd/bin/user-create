@@ -2,8 +2,8 @@
 
 source .env
 
-docker-compose exec taskd taskd add org "$taskd_user_company"
-docker-compose exec taskd taskd add user "$taskd_user_company" "$taskd_user_name" | tee -a user.log
+docker-compose exec taskd taskd add org "$%NAME%_user_company"
+docker-compose exec taskd taskd add user "$%NAME%_user_company" "$%NAME%_user_name" | tee -a user.log
 uid=$(tail -2 user.log | grep "New user key:"  | cut -d\  -f4)
 
-echo "$taskd_user_company/user/$uid" | tee -a user.config
+echo "$%NAME%_user_company/user/$uid" | tee -a user.config

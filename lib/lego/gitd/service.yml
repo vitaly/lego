@@ -1,11 +1,11 @@
-  gitd:
-    container_name: gitd
+  %NAME%:
+    container_name: %NAME%
     build:
-      context: gitd/build
+      context: %NAME%/build
       args:
-        - "GIT_ROOT=${gitd_repositories_root}"
+        - "GIT_ROOT=${%NAME%_repositories_root}"
     ports:
-      - "${gitd_port}:22"
+      - "${%NAME%_port}:22"
     volumes:
-      - "${gitd_volume_mount}:/git/${gitd_repositories_root}"
+      - "${%NAME%_volume_mount}:/git/${%NAME%_repositories_root}"
 

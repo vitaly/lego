@@ -15,7 +15,7 @@ config_diff() {
   require_args lego-config-diff 1 "$@"
 
   local name="$1"; shift
-  local dst="$(dst_lego $name)"
+  local dst="$(dst_path $name)"
 
   local env="$dst/.env"
   local orig="$dst/.env.orig"
