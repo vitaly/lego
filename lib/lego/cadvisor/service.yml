@@ -1,6 +1,12 @@
 
   %NAME%:
     image: google/cadvisor:latest
+    container_name: %NAME%
+    restart: always
     ports:
       - "${%NAME%_port}:8080"
-    container_name: %NAME%
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:rw"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"

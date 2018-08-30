@@ -1,0 +1,10 @@
+
+  %NAME%:
+    image: mongo
+    container_name: %NAME%
+    restart: always
+    ports:
+      - "${%NAME%_port}:2701"
+    volumes:
+      - "$%NAME%_mount_data:/data/db"
+      - "$%NAME%_mount_config:/data/configdb"

@@ -1,0 +1,10 @@
+
+  %NAME%:
+    image: uifd/ui-for-docker
+    container_name: %NAME%
+    privileged: true
+    restart: always
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "${%NAME%_port}:9000"
