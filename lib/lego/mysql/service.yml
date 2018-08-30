@@ -3,7 +3,7 @@
     image: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "${%NAME_root_password}"
+      MYSQL_ROOT_PASSWORD: "${%NAME%_root_password}"
     ports:
       - "${%NAME%_port}:3306"
     volumes:
