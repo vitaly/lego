@@ -19,7 +19,7 @@ update_services() {
     exit 2
   fi
 
-  echo -e "services:\n"        >> docker-compose.yml
+  echo -e "services:"        >> docker-compose.yml
   cat */service.yml >> docker-compose.yml
 }
 

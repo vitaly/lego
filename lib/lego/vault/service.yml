@@ -1,5 +1,7 @@
+
   %NAME%:
     image: vault
     ports:
       - "${%NAME%_port}:8200"
+    restart: always
     container_name: %NAME%

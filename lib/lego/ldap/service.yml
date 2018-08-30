@@ -1,0 +1,15 @@
+
+  %NAME%:
+    image: osixia/openldap
+    restart: always
+    container_name: %NAME%
+    environment:
+      LDAP_ORGANISATION: "${%NAME%_organisation}"
+      LDAP_DOMAIN: "${%NAME%_domain}"
+      LDAP_ADMIN_PASSWORD: "${%NAME%_admin_password}"
+    ports:
+      - "${%NAME%_port}:389"
+      - "${%NAME%_port2}:636"
+    volumes:
+      - "${%NAME%_mount_data}:/var/lib/ldap"
+      - "${%NAME%_mount_config}:/etc/ldap/slapd.d"

@@ -1,8 +1,9 @@
+
   %NAME%:
     image: postgres
+    restart: always
     ports:
       - "${%NAME%_port}:5432"
     container_name: %NAME%
     volumes:
       - "${%NAME%_volume_mount}:/var/lib/postgresql/data"
-

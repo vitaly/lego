@@ -18,11 +18,12 @@ copy_file() {
   local src="${2#./}"
   local path="${3#./}"
   local dst="$4"
+  local NAME="${name/-/_}"
 
   local dir="$dst/$(dirname "$path")"
   mkdir -p "$dir"
   cp -fv "$src/$path" "$dst/$path"
-  sed -i "" "s/%NAME%/$name/g" "$dst/$path"
+  sed -i "" "s/%NAME%/$NAME/g" "$dst/$path"
 }
 
 copy_files() {

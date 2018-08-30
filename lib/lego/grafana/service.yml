@@ -1,5 +1,7 @@
+
   %NAME%:
     image: grafana/grafana
+    restart: always
     volumes:
       - "$%NAME%_data_mount:/var/lib/grafana"
       - "$%NAME%_logs_mount:/var/log/grafana"

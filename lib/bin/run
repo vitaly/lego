@@ -10,13 +10,11 @@ END
   exit
 }
 
-usage() {
-  help
-  exit 1
-}
-
-
 run() {
+  handle_help "$@"
+  require_args run 2 "$@"
+
+  check_initialized
   if [ ! -d "$1" ]; then
     echo "$1 not yet installed. Run 'lego-add $1' to install"
     exit 1

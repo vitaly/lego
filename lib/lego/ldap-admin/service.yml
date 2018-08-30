@@ -1,0 +1,10 @@
+
+  %NAME%:
+    image: osixia/phpldapadmin
+    restart: always
+    ports:
+      - "${%NAME%_port}:80"
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "${%NAME%_ldap_hosts}"
+      PHPLDAPADMIN_HTTPS: "${%NAME%_https}"
+    container_name: %NAME%

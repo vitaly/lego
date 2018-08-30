@@ -1,7 +1,9 @@
+
   %NAME%:
     container_name: %NAME
     build:
       context: %NAME%/build
+    restart: always
     ports:
       - "${%NAME%_port}:53589"
     volumes:
