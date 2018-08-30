@@ -1,4 +1,4 @@
-all: sshd gitd taskd gemstash
+all: sshd gitd taskd gemstash npm-proxy
 .PHONY: all
 
 base:
@@ -17,6 +17,10 @@ taskd: base
 	${MAKE} -C $@
 .PHONY: taskd
 
-gemstash: base
+gemstash:
 	${MAKE} -C $@
 .PHONY: gemstash
+
+npm-proxy:
+	${MAKE} -C $@
+.PHONY: npm-proxy
