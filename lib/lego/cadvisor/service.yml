@@ -1,0 +1,5 @@
+  %NAME%:
+    image: google/cadvisor:latest
+    ports:
+      - "${%NAME%_port}:8080"
+    container_name: %NAME%

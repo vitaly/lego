@@ -19,11 +19,7 @@ copy_file() {
   local path="${3#./}"
   local dst="$4"
 
-  echo name=$name src=$src path=$path dst=$dst
-
   local dir="$dst/$(dirname "$path")"
-  echo dir=$dir
-  set -x
   mkdir -p "$dir"
   cp -fv "$src/$path" "$dst/$path"
   sed -i "" "s/%NAME%/$name/g" "$dst/$path"
