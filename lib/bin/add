@@ -96,6 +96,7 @@ run_install() {
 add() {
   handle_help "$@"
   require_args add 1 "$@"
+  check_initialized
 
   local lego="$1"
 

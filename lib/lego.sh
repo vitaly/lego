@@ -58,6 +58,5 @@ src_path() {
 }
 
 dst_path() {
-  check_initialized
   echo "$(pwd)/$1"
 }

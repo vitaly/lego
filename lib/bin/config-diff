@@ -38,8 +38,12 @@ END
 
 ======================${RESET}
 
+Press ENTER to diff-edit
+
 END
 
+  read
+  vim -d "$env" "$orig"
 }
 
 config_diff "$@"
