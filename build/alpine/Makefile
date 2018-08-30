@@ -1,4 +1,4 @@
-all: sshd gitd taskd gemstash npm-proxy
+all: sshd gitd taskd gemstash npm-proxy kdb
 .PHONY: all
 
 base:
@@ -24,3 +24,7 @@ gemstash:
 npm-proxy:
 	${MAKE} -C $@
 .PHONY: npm-proxy
+
+kdb: base
+	${MAKE} -C $@
+.PHONY: kdb
