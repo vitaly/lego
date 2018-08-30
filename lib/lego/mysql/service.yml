@@ -1,0 +1,11 @@
+
+  %NAME%:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${%NAME_root_password}"
+    ports:
+      - "${%NAME%_port}:3306"
+    volumes:
+      - "${%NAME%_mount}:/var/lib/mysql"
+    container_name: %NAME%
