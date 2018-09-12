@@ -1,0 +1,9 @@
+
+  %NAME%:
+    image: nginx
+    restart: always
+    ports:
+      - "${%NAME%_port}:80"
+    container_name: %NAME%
+    volumes:
+      - "${%NAME%_volume_mount}:/usr/share/nginx/html:ro"
