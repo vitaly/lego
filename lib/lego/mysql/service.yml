@@ -4,6 +4,7 @@
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "${%NAME%_root_password}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "${%NAME%_allow_empty_password}"
     ports:
       - "${%NAME%_port}:3306"
     volumes:
