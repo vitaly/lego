@@ -1,0 +1,11 @@
+
+  %NAME%:
+    image: spotify/kafka
+    container_name: %NAME%
+    restart: always
+    ports:
+      - "${%NAME%_port}:2181"
+      - "${%NAME%_port2}:9092"
+    environment:
+      ADVERTISED_HOST: "${%NAME%_advertised_host}"
+      ADVERTISED_PORT: "${%NAME%_port2}"
