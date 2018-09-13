@@ -1,0 +1,7 @@
+
+  %NAME%:
+    image: xxx
+    restart: always
+    ports:
+      - "${%NAME%_port}:xxxx"
+    container_name: %NAME%
